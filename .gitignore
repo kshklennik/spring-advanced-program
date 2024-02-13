@@ -1,0 +1,12 @@
+target/
+log/
+logs/
+.classpath/
+.settings/
+test-output/
+.idea/
+*.project
+*.iml
+*.log
+*.txt
+*.zip
