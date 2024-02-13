@@ -1,0 +1,54 @@
+global:
+  database:
+    dbName: ${APPLICATION_GLOBAL_DB_NAME:springfoundation-task-2}
+    dbSchema: ${APPLICATION_GLOBAL_DB_SCHEMA:public}
+
+spring:
+  application:
+    version: '@project.version@'
+    name: spring-foundation-task-2
+
+  datasource:
+    jdbc-url: ${SPRING_DATASOURCE_JDBCURL:jdbc:h2:mem:${global.database.dbName}}
+    username: ${SPRING_DATASOURCE_USERNAME:customuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:12345678}
+    driverClassName: org.h2.Driver
+    hikari:
+      schema: ${global.database.dbSchema}
+
+  jpa:
+    properties:
+      hibernate:
+        default-schema: ${global.database.dbSchema}
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+
+application:
+  custom-datasource:
+    enabled: false
+    datasource:
+      jdbc-url: ${SPRING_DATASOURCE_CUSTOM_JDBCURL:jdbc:h2:mem:${global.database.dbName}-custom}
+      username: ${SPRING_DATASOURCE_CUSTOM_USERNAME:customuser}
+      password: ${SPRING_DATASOURCE_CUSTOM_PASSWORD:12345678}
+      driverClassName: org.h2.Driver
+      hikari:
+        connectionTimeout: ${APPLICATION_DATABASE_CONNECTION_TIMEOUT:30000}
+        maximum-pool-size: ${APPLICATION_DATABASE_MAXIMUM_POOL_SIZE:10}
+        schema: ${global.database.dbSchema}
+
+logging:
+  level:
+    root: ${GLOBAL_LOGGING_LEVEL:DEBUG}
+    org:
+      springframework: ${logging.level.root:ERROR}
+      hibernate: ${logging.level.root:ERROR}
+      apache:
+        tomcat: ${logging.level.root:INFO}
+        catalina: ${logging.level.root:INFO}
+    com:
+      mkyong: ${logging.level.root:ERROR}
+      zaxxer:
+        hikari: ${logging.level.root:INFO}
+      root: ${logging.level.root:ERROR}
