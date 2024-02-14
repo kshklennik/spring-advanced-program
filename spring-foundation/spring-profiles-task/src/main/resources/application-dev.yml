@@ -1,0 +1,12 @@
+spring:
+  application:
+    version: '@project.version@'
+    name: spring-foundation-task-3-dev
+
+  datasource:
+    jdbc-url: ${SPRING_DATASOURCE_JDBCURL:jdbc:h2:mem:${global.database.dbName}}
+    username: ${SPRING_DATASOURCE_USERNAME:customuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:12345678}
+    driverClassName: org.h2.Driver
+    hikari:
+      schema: ${global.database.dbSchema}
