@@ -20,7 +20,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-            .authorizeHttpRequests(authorize -> authorize.regexMatchers("/actuator/*")
+            .authorizeHttpRequests(authorize ->
+                authorize.regexMatchers("/actuator/*")
                 .permitAll()
                 .anyRequest().authenticated()).build();
     }
