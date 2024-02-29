@@ -1,0 +1,25 @@
+spring:
+  application:
+    version: '@project.version@'
+    name: task-avro
+
+  kafka:
+    topicName: ${APPLICATION_KAFKA_TASK_AVRO_TOPIC:test-topic}
+    bootstrap-servers: ${APPLICATION_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${APPLICATION_KAFKA_GROUP_ID:test-group}
+
+server:
+  port: ${APPLICATION_SERVER_PORT:8080}
+  servlet:
+    encoding:
+      charset: UTF-8
+
+logging:
+  level:
+    root: ${GLOBAL_LOGGING_LEVEL:INFO}
+    org:
+      springframework: ${logging.level.root:ERROR}
+      apache:
+        tomcat: ${logging.level.root:INFO}
+        catalina: ${logging.level.root:INFO}
