@@ -8,6 +8,15 @@ spring:
     bootstrap-servers: ${APPLICATION_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: ${APPLICATION_KAFKA_GROUP_ID:test-group}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+    producer:
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      schema:
+        registry:
+          url: ${APPLICATION_KAFKA_SCHEMA_REGISTRY:localhost:8081}
 
 server:
   port: ${APPLICATION_SERVER_PORT:8080}

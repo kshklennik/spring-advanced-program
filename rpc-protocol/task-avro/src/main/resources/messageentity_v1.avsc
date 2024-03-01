@@ -1,0 +1,15 @@
+{
+  "namespace": "com.epam.avrotask.entity",
+  "type": "record",
+  "name": "MessageEntity",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "message",
+      "type": "string"
+    }
+  ]
+}

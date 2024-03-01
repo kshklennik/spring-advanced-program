@@ -20,6 +20,7 @@ public class MessageProducer {
 
     @SneakyThrows
     public SendResult<String, MessageEntity> sendMessage(String topic, MessageEntity message) {
+        ;
         ListenableFuture<SendResult<String, MessageEntity>> send = kafkaTemplate.send(topic, message);
         return send.get(5, TimeUnit.SECONDS);
     }
