@@ -13,6 +13,6 @@ public class MessageConsumer {
 
     @KafkaListener(topics = "${spring.kafka.topicName}", groupId = "${spring.kafka.consumer.group-id}")
     public void listen(MessageEntity message) {
-        log.info("Received message: {}", message.getId().toString());
+        log.info("Received message: {}", message);
     }
 }

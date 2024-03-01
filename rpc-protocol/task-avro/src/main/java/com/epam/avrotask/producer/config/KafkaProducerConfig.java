@@ -2,6 +2,7 @@ package com.epam.avrotask.producer.config;
 
 import com.epam.avrotask.deserializer.MessageDeserializer;
 import com.epam.avrotask.entity.MessageEntity;
+import com.epam.avrotask.seserializer.MessageSerializer;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -26,7 +27,7 @@ public class KafkaProducerConfig {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, MessageDeserializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, MessageSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 

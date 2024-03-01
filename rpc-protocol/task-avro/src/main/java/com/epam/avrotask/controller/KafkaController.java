@@ -23,11 +23,11 @@ public class KafkaController {
     private MessageProducer messageProducer;
 
     @PostMapping("/send")
-    public SendResult<String, MessageEntity> sendMessage(@RequestBody MessageEntity message) {
+    public MessageEntity sendMessage(@RequestBody MessageEntity message) {
         SendResult<String, MessageEntity> result =
             messageProducer.sendMessage(topicName, message);
 
         log.info("Message sent: {}", message);
-        return result;
+        return result.getProducerRecord().value();
     }
 }
