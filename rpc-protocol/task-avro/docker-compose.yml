@@ -11,7 +11,7 @@ services:
       - APPLICATION_KAFKA_TASK_AVRO_TOPIC=task-avro-topic
       - APPLICATION_KAFKA_BOOTSTRAP_SERVERS=task-avro-kafka:9092
       - APPLICATION_KAFKA_GROUP_ID=task-avro-group
-      - APPLICATION_KAFKA_SCHEMA_REGISTRY= task-avro-schema-registry:8081
+      - APPLICATION_KAFKA_SCHEMA_REGISTRY= http://task-avro-schema-registry:8081
     depends_on:
       - task-avro-zookeeper
       - task-avro-kafka
@@ -63,7 +63,7 @@ services:
       - task-avro-net
 
   task-avro-control-center:
-    image: confluentinc/cp-enterprise-control-center:5.4.0
+    image: confluentinc/cp-enterprise-control-center:latest
     hostname: task-avro-control-center
     container_name: task-avro-control-center
     depends_on:

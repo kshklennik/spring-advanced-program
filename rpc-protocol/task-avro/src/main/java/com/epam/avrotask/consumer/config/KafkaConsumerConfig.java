@@ -15,18 +15,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 
 @Configuration
 public class KafkaConsumerConfig {
 
+    private static final String SCHEMA_REGISTRY_URL_KEY = "schema.registry.url";
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
-
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
-
-    private static final String SCHEMA_REGISTRY_URL_KEY = "schema.registry.url";
-
     @Value("${spring.kafka.producer.schema.registry.url}")
     private String registryUrl;
 
@@ -37,6 +35,8 @@ public class KafkaConsumerConfig {
         configProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
+        configProps.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "true");
+
         configProps.put(SCHEMA_REGISTRY_URL_KEY, registryUrl);
 
         return new DefaultKafkaConsumerFactory<>(configProps);
