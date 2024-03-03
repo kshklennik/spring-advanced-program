@@ -1,0 +1,91 @@
+global:
+  database:
+    dbName: ${APPLICATION_GLOBAL_DB_NAME:postgres}
+    dbSchema: ${APPLICATION_GLOBAL_DB_SCHEMA:public}
+    sslMode: ${APPLICATION_GLOBAL_DB_SSL_MODE:disable}
+
+spring:
+  application:
+    version: '@project.version@'
+    name: authentication-and-authorization
+
+  datasource:
+    url: ${SPRING_DATASOURCE_JDBCURL:jdbc:postgresql://localhost:5432}/${global.database.dbName}?sslmode=${global.database.sslmode}
+    username: ${SPRING_DATASOURCE_USERNAME:psagentuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:12345678}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connectionTimeout: ${APPLICATION_DATABASE_CONNECTION_TIMEOUT:30000}
+      maximum-pool-size: ${APPLICATION_DATABASE_MAXIMUM_POOL_SIZE:10}
+      schema: ${global.database.dbSchema}
+
+  jpa:
+    properties:
+      hibernate:
+        default-schema: ${global.database.dbSchema}
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+
+  jmx:
+    enabled: ${APPLICATION_JMX:false}
+
+  freemarker:
+    enabled: true
+    suffix: .ftl
+    charset: UTF-8
+    content-type: text/html
+    template-loader-path: classpath:/templates/
+    cache: true
+    expose-spring-macro-helpers: true
+    request-context-attribute: requestContext
+
+    resources:
+      static-locations: classpath:/static/
+
+server:
+  port: ${APPLICATION_SERVER_PORT:8080}
+  servlet:
+    encoding:
+      charset: UTF-8
+
+management:
+  monitoring:
+    enabled: ${APPLICATION_MONITORING:true}
+  endpoint:
+    health:
+      enabled: true
+      probes:
+        enabled: true
+    env:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: metrics,info,health,env,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}
+
+logging:
+  level:
+    root: ${GLOBAL_LOGGING_LEVEL:INFO}
+    org:
+      springframework: ${logging.level.root:ERROR}
+      hibernate: ${logging.level.root:ERROR}
+      apache:
+        tomcat: ${logging.level.root:INFO}
+        catalina: ${logging.level.root:INFO}
+    com:
+      mkyong: ${logging.level.root:ERROR}
+      zaxxer:
+        hikari: ${logging.level.root:INFO}
+      root: ${logging.level.root:ERROR}
