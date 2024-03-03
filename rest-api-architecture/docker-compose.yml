@@ -1,0 +1,38 @@
+version: '3'
+services:
+  jmp-db:
+    container_name:  jmp-db
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=jmpuser
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=jmpapp
+    ports:
+      - '5432:5432'
+    volumes:
+      - jmp-vol:/var/lib/postgresql/data
+
+  jmp-app:
+    container_name: jmp-app
+    image: jmp-app
+    build:
+      dockerfile: ./Dockerfile
+    links:
+      - jmp-db
+    depends_on:
+      - jmp-db
+    environment:
+      - SPRING_DATASOURCE_JDBCURL=jdbc:postgresql://jmp-db:5432
+      - APPLICATION_GLOBAL_DB_NAME=jmpapp
+      - APPLICATION_GLOBAL_DB_SCHEMA=public
+      - APPLICATION_GLOBAL_DB_SSL_MODE=disable
+      - SPRING_DATASOURCE_USERNAME=jmpuser
+      - SPRING_DATASOURCE_PASSWORD=12345678
+    ports:
+      - '8080:8080'
+    restart: always
+
+volumes:
+  jmp-vol:
+    driver: local
