@@ -10,7 +10,6 @@ package com.epam.authtaskapp.controller;
 import com.epam.authtaskapp.entity.ViewName;
 import com.epam.authtaskbruteforce.service.LoginAttemptService;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,26 +23,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class IndexPageController {
+public class AppController {
 
     private final LoginAttemptService loginAttemptService;
-
-    @Value("${spring.application.version:unknown}")
-    private String version;
 
     @GetMapping("/index")
     public ModelAndView index(ModelAndView modelAndView) {
         modelAndView.setViewName(ViewName.INDEX.getName());
-
-        modelAndView.addObject("version", version);
         return modelAndView;
     }
 
     @GetMapping("/blocked-users")
     public ModelAndView blockedUsers(ModelAndView modelAndView) {
         modelAndView.setViewName(ViewName.BLOCKED_USERS.getName());
-
         modelAndView.addObject("blocked", loginAttemptService.getBlocked());
+        return modelAndView;
+    }
+
+    @GetMapping("/info")
+    public ModelAndView info(ModelAndView modelAndView) {
+        modelAndView.setViewName(ViewName.INFO.getName());
         return modelAndView;
     }
 
@@ -51,8 +50,6 @@ public class IndexPageController {
     public ModelAndView login(@RequestParam Optional<String> error) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(ViewName.LOGIN.getName());
-        modelAndView.addObject("version", version);
-
         if (error.isPresent()) {
             modelAndView.addObject("error", error);
         }

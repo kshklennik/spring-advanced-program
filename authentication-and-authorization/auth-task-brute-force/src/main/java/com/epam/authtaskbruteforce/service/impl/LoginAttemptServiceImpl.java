@@ -5,6 +5,7 @@ import com.epam.authtaskbruteforce.service.LoginAttemptService;
 import com.epam.authtaskbruteforce.util.AttemptUtils;
 
 import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
@@ -18,12 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import javax.servlet.AsyncContext;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@EnableScheduling
 @Component
 public class LoginAttemptServiceImpl implements LoginAttemptService, ApplicationListener<AbstractAuthenticationEvent> {
     private final ConcurrentHashMap<String, Attempt> attemptMap = new ConcurrentHashMap<>();
@@ -31,8 +34,7 @@ public class LoginAttemptServiceImpl implements LoginAttemptService, Application
 
     @Override
     public List<Attempt> getBlocked() {
-        return attemptMap.values()
-            .stream().toList();
+        return new ArrayList<>(attemptMap.values());
     }
 
     @Override
@@ -106,7 +108,7 @@ public class LoginAttemptServiceImpl implements LoginAttemptService, Application
                 && null != ctxMap.get(attempt.getUser())
                 && !ctxMap.get(attempt.getUser()).isEmpty())
             .map(Attempt::getUser)
-            .toList();
+            .collect(Collectors.toList());
 
         if (!badUsers.isEmpty()) {
             log.debug("Found {} users for processing", badUsers.size());

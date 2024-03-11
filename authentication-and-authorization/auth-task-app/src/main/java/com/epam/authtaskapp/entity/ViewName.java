@@ -16,6 +16,7 @@ public enum ViewName {
 
     INDEX("index"),
     LOGIN("login"),
+    INFO("info"),
     BLOCKED_USERS("blocked-users"),
     DEFAULT_ERROR_VIEW("error");
 

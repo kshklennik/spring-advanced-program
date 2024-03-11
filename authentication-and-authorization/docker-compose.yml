@@ -1,0 +1,38 @@
+version: '3'
+services:
+  auth-db:
+    container_name:  auth-db
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=authuser
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=authapp
+    ports:
+      - '5432:5432'
+    volumes:
+      - jmp-vol:/var/lib/postgresql/data
+
+  auth-app:
+    container_name: auth-app
+    image: auth-app
+    build:
+      dockerfile: ./Dockerfile
+    links:
+      - auth-db
+    depends_on:
+      - auth-db
+    environment:
+      - SPRING_DATASOURCE_JDBCURL=jdbc:postgresql://auth-db:5432
+      - APPLICATION_GLOBAL_DB_NAME=authapp
+      - APPLICATION_GLOBAL_DB_SCHEMA=public
+      - APPLICATION_GLOBAL_DB_SSL_MODE=disable
+      - SPRING_DATASOURCE_USERNAME=authuser
+      - SPRING_DATASOURCE_PASSWORD=12345678
+    ports:
+      - '8080:8080'
+    restart: always
+
+volumes:
+  jmp-vol:
+    driver: local

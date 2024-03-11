@@ -10,6 +10,7 @@ package com.epam.authtaskapp.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +36,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
             .authorizeRequests(request ->
-                request.antMatchers(ENDPOINTS_WHITELIST).permitAll()
+                request.antMatchers(HttpMethod.GET, ENDPOINTS_WHITELIST).permitAll()
+                    .antMatchers(HttpMethod.GET, "/blocked-users").hasAuthority("VIEW_ADMIN")
+                    .antMatchers(HttpMethod.GET, "/info").hasAuthority("VIEW_INFO")
                     .anyRequest().authenticated())
             .formLogin()
             .loginPage("/login")

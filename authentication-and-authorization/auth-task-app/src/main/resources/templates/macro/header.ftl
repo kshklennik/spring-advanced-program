@@ -9,12 +9,18 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="/index" class="nav-link px-2 text-secondary">Home</a></li>
+                <li><a href="/info" class="nav-link px-2 text-secondary">Info</a></li>
                 <li><a href="/blocked-users" class="nav-link px-2 text-white">Blocked</a></li>
             </ul>
 
             <div class="text-end">
+                <#--                <@security.authorize access="!isAuthenticated()">-->
                 <a class="btn btn-outline-light me-2" href="/login" role="button">Login</a>
+                <#--                </@security.authorize>-->
+                <#--                <@security.authorize access="isAuthenticated()">-->
                 <a class="btn btn-warning" href="/logout" role="button">LogOut</a>
+                <#--                </@security.authorize>-->
+
             </div>
         </div>
     </div>
